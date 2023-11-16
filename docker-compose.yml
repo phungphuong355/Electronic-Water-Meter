@@ -1,0 +1,17 @@
+services:
+  electronic_watches:
+    container_name: electronic_watches_backend
+    build:
+      dockerfile: dockerfile
+      context: .
+      network: host
+    command: ["python3", "app.py"]
+    restart: always
+    ports:
+      - 3106:3106
+    networks:
+      - pc03
+
+networks:
+  pc03:
+    name: pc03

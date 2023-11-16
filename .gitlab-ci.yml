@@ -1,0 +1,29 @@
+image: ubuntu
+
+stages:
+#  - test
+  - run
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  # Setup SSH deploy keys
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+#test:
+#  stage: test
+#  script:
+#    - ssh pc03@phuongnamdts.com -p322 "cd www/RR-Tools/backend/ && git pull && pip install -r setup.txt && python3 ./main.py"
+
+backend:
+  stage: run
+  script:
+  - ssh pc03@phuongnamdts.com -p322 "cd www/Electronic-watches-prediction/backend/ && git pull
+    origin main && docker compose down && docker compose -f docker-compose.yml up --build -d && docker system
+    prune --force && exit"
+  only:
+  - main

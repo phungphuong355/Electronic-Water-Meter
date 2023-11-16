@@ -1,0 +1,6 @@
+flask
+flask-cors
+ultralytics
+transformers
+pymongo
+Flask-Redis
